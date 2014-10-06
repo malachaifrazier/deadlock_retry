@@ -1,15 +1,15 @@
 require 'rubygems'
 
 # Change the version if you want to test a different version of ActiveRecord
-gem 'activerecord', ENV['ACTIVERECORD_VERSION'] || ' ~>3.0'
+gem 'activerecord', ENV['ACTIVERECORD_VERSION'] || ' ~>3.2'
 require 'active_record'
 require 'active_record/version'
 puts "Testing ActiveRecord #{ActiveRecord::VERSION::STRING}"
 
-require 'test/unit'
-require 'mocha'
+require 'minitest/autorun'
+require 'mocha/mini_test'
 require 'logger'
-require "deadlock_retry"
+require "../lib/deadlock_retry"
 
 class MockModel
   @@open_transactions = 0
@@ -52,7 +52,7 @@ class MockModel
   include DeadlockRetry
 end
 
-class DeadlockRetryTest < Test::Unit::TestCase
+class DeadlockRetryTest < MiniTest::Test
   DEADLOCK_ERROR = "MySQL::Error: Deadlock found when trying to get lock"
   TIMEOUT_ERROR = "MySQL::Error: Lock wait timeout exceeded"
 
@@ -77,13 +77,13 @@ class DeadlockRetryTest < Test::Unit::TestCase
   end
 
   def test_error_if_limit_exceeded
-    assert_raise(ActiveRecord::StatementInvalid) do
+    assert_raises(ActiveRecord::StatementInvalid) do
       MockModel.transaction { raise ActiveRecord::StatementInvalid, DEADLOCK_ERROR }
     end
   end
 
   def test_error_if_unrecognized_error
-    assert_raise(ActiveRecord::StatementInvalid) do
+    assert_raises(ActiveRecord::StatementInvalid) do
       MockModel.transaction { raise ActiveRecord::StatementInvalid, "Something else" }
     end
   end

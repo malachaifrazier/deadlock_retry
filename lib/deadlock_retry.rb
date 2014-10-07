@@ -19,7 +19,7 @@ module DeadlockRetry
       "deadlock detected"
     ]
 
-    MAXIMUM_RETRIES_ON_DEADLOCK = 3
+    MAXIMUM_RETRIES_ON_DEADLOCK = 5
 
 
     def transaction_with_deadlock_handling(*objects, &block)

@@ -1,6 +1,6 @@
 require 'rubygems'
 
-# Change the version if you want to test a different version of ActiveRecord
+# # Change the version if you want to test a different version of ActiveRecord
 gem 'activerecord', ENV['ACTIVERECORD_VERSION'] || ' ~>3.2'
 require 'active_record'
 require 'active_record/version'
@@ -9,9 +9,11 @@ puts "Testing ActiveRecord #{ActiveRecord::VERSION::STRING}"
 require 'minitest/autorun'
 require 'mocha/mini_test'
 require 'logger'
-require "../lib/deadlock_retry"
+# require '../lib/deadlock_retry'
+require 'test_helper.rb'
 
 class MockModel
+  # include DeadlockRetry
   @@open_transactions = 0
 
   def self.transaction(*objects)
@@ -48,13 +50,12 @@ class MockModel
   def self.adapter_name
     "MySQL"
   end
-
-  include DeadlockRetry
 end
 
-class DeadlockRetryTest < MiniTest::Test
+class DeadlockRetryTest < Minitest::Unit::TestCase
   DEADLOCK_ERROR = "MySQL::Error: Deadlock found when trying to get lock"
   TIMEOUT_ERROR = "MySQL::Error: Lock wait timeout exceeded"
+  # include DeadlockRetry
 
   def setup
     MockModel.stubs(:exponential_pause)
@@ -66,6 +67,7 @@ class DeadlockRetryTest < MiniTest::Test
 
   def test_no_errors_with_deadlock
     errors = [ DEADLOCK_ERROR ] * 3
+    binding.pry
     assert_equal :success, MockModel.transaction { raise ActiveRecord::StatementInvalid, errors.shift unless errors.empty?; :success }
     assert errors.empty?
   end

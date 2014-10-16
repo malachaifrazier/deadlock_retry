@@ -1,6 +1,10 @@
-[![Code Climate](https://codeclimate.com/github/malachaifrazier/deadlock_retry/badges/gpa.svg)](https://codeclimate.com/github/malachaifrazier/deadlock_retry)
+[![Code Climate](https://codeclimate.com/github/malachaifrazier/deadlock_retry/badges/gpa.svg)]
+(https://codeclimate.com/github/malachaifrazier/deadlock_retry)
+
 [![Test Coverage](https://codeclimate.com/github/malachaifrazier/deadlock_retry/badges/coverage.svg)](https://codeclimate.com/github/malachaifrazier/deadlock_retry)
+
 [![Coverage Status](https://coveralls.io/repos/malachaifrazier/deadlock_retry/badge.png)](https://coveralls.io/r/malachaifrazier/deadlock_retry)
+
 [![Dependency Status](https://gemnasium.com/malachaifrazier/deadlock_retry.svg)](https://gemnasium.com/malachaifrazier/deadlock_retry)
 
 
